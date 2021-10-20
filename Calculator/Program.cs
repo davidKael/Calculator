@@ -16,17 +16,17 @@ namespace Calculator
             List<string> usersCalculations = new List<string>();
 
             bool isInNavigation = false;
-            bool isConsoleRunning = true;
+            bool isApplicationRunning = true;
 
 
 
-            while (isConsoleRunning)
+            while (isApplicationRunning)
             {
 
 
                 if (GetUserCalculation(out double calNr1, out double calNr2, out char operatorType))
                 {
-                    string calculation = Calculate(calNr1, calNr2, operatorType);
+                    string calculation = GetCalculation(calNr1, calNr2, operatorType);
                     usersCalculations.Add(calculation);
                     Console.WriteLine(calculation);
                     Console.WriteLine("---------------------------------------------------------------------------------");
@@ -154,7 +154,7 @@ namespace Calculator
 
 
 
-            string Calculate(double _input1, double _input2, char _operatorType)
+            string GetCalculation(double _input1, double _input2, char _operatorType)
             {
                 
 
@@ -166,10 +166,11 @@ namespace Calculator
                     case '-':
                         return $"{_input1} {_operatorType} {_input2} = {_input1 - _input2}";
                        
-                    case '*':
+                    case '*' or 'x':
+                        _operatorType = '*';
                         return $"{_input1} {_operatorType} {_input2} = {_input1 * _input2}";
 
-                    case '/':
+                    case '/':   
                         return _input2 == 0 ? $"{_input1} {_operatorType} {_input2} = 0" : $"{_input1} {_operatorType} {_input2} = {_input1 / _input2}";
                         
 
@@ -185,14 +186,14 @@ namespace Calculator
             bool IsCharValidAsOperator(char _operatorType)
             {
 
-                return _operatorType == '+' || _operatorType == '-' || _operatorType == '*' || _operatorType == '/';
+                return _operatorType == '+' || _operatorType == '-' || _operatorType == '*' || _operatorType == 'x' || _operatorType == '/';
             }
 
 
             void ShowErrorMessage(string _reason)
             {
                 Console.Clear();
-                Console.WriteLine(_reason + " is invalid");
+                Console.WriteLine(_reason + " is not valid");
             }
 
             void Navigation(ConsoleKeyInfo _key)
@@ -210,7 +211,7 @@ namespace Calculator
                     //Cancel
                     case ConsoleKey.Escape:
                         isInNavigation = false;
-                        isConsoleRunning = false;
+                        isApplicationRunning = false;
                         Console.Clear();
                         break;
 
