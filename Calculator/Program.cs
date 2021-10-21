@@ -6,46 +6,32 @@ namespace Calculator
     class Program
     {
 
-
+        enum Pages {start, calculator, calculations}
 
 
 
         static void Main(string[] args)
         {
-            string userName = "";
+            
             List<string> usersCalculations = new List<string>();
-
-            bool isInNavigation = false;
+            string userName = "";
+            bool isCalculating = false;
             bool isApplicationRunning = true;
-
 
 
             while (isApplicationRunning)
             {
+              
 
-
-                if (GetUserCalculation(out double calNr1, out double calNr2, out char operatorType))
+                if (userName == "")
                 {
-                    string calculation = GetCalculation(calNr1, calNr2, operatorType);
-                    usersCalculations.Add(calculation);
-                    Console.WriteLine(calculation);
-                    Console.WriteLine("---------------------------------------------------------------------------------");
+                    SetUserName();
                 }
 
+                StartMenu();
 
-
-                isInNavigation = true;
-                
-
-                while (isInNavigation)
-                {
-
-                    Console.WriteLine("'Enter' to make a new calculation");
-                    Console.WriteLine("'Space' to show all previous calculations");
-                    Console.WriteLine("'Esc' to quit");
-                    Navigation(Console.ReadKey());
-                }
-
+      
+               
             }
 
             void SetUserName()
@@ -60,165 +46,146 @@ namespace Calculator
 
 
 
-            bool GetUserCalculation(out double calNr1, out double calNr2, out char operatorType)
+            bool CreateCalculation()
             {
 
                 Console.Clear();
 
-                if(userName == "")
+                double[] calNrs = new double[2];
+                char calOperator;
+                string calculation;
+
+                for (int i = 0; i < calNrs.Length; i++)
                 {
-
-                    SetUserName();
-
+                    if(GetNrInput(i + 1, out double _calNr))
+                    {
+                        calNrs[i] = _calNr;
+                    }
                 }
 
-                while (true)
+                if (GetOperatorInput(out calOperator))
                 {
-
-                    Console.Write("Enter first number:  ");
-                    string userInput = Console.ReadLine();
-
-
-
-                    if (double.TryParse(userInput, out calNr1))
-                    {
-
-                        //first number is now valid
-                        break;
-
-                    }
-
-
-                    else
-                    {
-
-                        ShowErrorMessage("First number");
-                    }
-
+                    calculation = Calculate(calNrs[0], calNrs[1], calOperator);
+                    usersCalculations.Add(calculation);
                 }
 
 
-
-
-                while (true)
-                {
-
-                    Console.Write("Enter second number:  ");
-                    string userInput = Console.ReadLine();
-
-                    if (double.TryParse(userInput, out calNr2))
-                    {
-                        //second number is now valid
-                        break;
-
-                    }
-
-
-                    else
-                    {
-
-                        ShowErrorMessage("Second number");
-                    }
-
-                }
-
-
-                
-                while (true)
-                {
-
-                    Console.Write("Enter which operator ( + - * / ):  ");
-                    string userInput = Console.ReadLine();
-
-                    if (char.TryParse(userInput, out operatorType) && IsCharValidAsOperator(operatorType))
-                    {
-                        //operator is now valid
-                        break;
-                    }
-
-
-                    else
-                    {
-
-                        ShowErrorMessage("Operator"); 
-                    }
-                }
 
 
                 Console.Clear();
-
-                return true;
+                Console.WriteLine("---------------------------------------------------------------------------------");
+                Console.WriteLine(usersCalculations[usersCalculations.Count -1]);
+                
+                //no calculation is running
+                return false;
             }
 
+           
+            bool GetNrInput(int _index, out double calNr)
+            {              
 
+                while (true)
+                {
+                    Console.WriteLine("---------------------------------------------------------------------------------");
+                    Console.Write($"{GetNrEnd(_index)} number:   ");
+                    string userInput = Console.ReadLine();
+                    Console.Clear();
 
+                    if (double.TryParse(userInput, out calNr))
+                    {
+                        //input is now valid and returned as double
+                       
+                        return true;                                                                                      
+                    }
+                    else
+                    {     
+                        //input not valid
+                        ShowErrorMessage("Number", _index);                          
+                    }
+                }
+            }
 
-
-            string GetCalculation(double _input1, double _input2, char _operatorType)
+            bool GetOperatorInput(out char _calOp)
             {
-                
+                while (true)
+                {
+                    string validOperators = "+-*/";
+                    Console.WriteLine("---------------------------------------------------------------------------------");
+                    Console.Write("Choose operator ( + - * / ):  ");
+                    string userInput = Console.ReadLine();
+                    Console.Clear();
+
+
+                    if (char.TryParse(userInput, out _calOp) && validOperators.Contains(_calOp))
+                    {
+                        //calculation is now valid
+                        return true;
+                    }
+                    else
+                    {
+
+                        ShowErrorMessage("Operator", 0);
+                    }
+                }
+            }
+            
+
+            string Calculate(double _input1, double _input2, char _operatorType)
+            {     
 
                 switch (_operatorType)
                 {
+
                     case '+':
                         return $"{_input1} {_operatorType} {_input2} = {_input1 + _input2}";
-                       
-                    case '-':
-                        return $"{_input1} {_operatorType} {_input2} = {_input1 - _input2}";
-                       
-                    case '*' or 'x':
-                        _operatorType = '*';
-                        return $"{_input1} {_operatorType} {_input2} = {_input1 * _input2}";
-
-                    case '/':   
-                        return _input2 == 0 ? $"{_input1} {_operatorType} {_input2} = 0" : $"{_input1} {_operatorType} {_input2} = {_input1 / _input2}";
                         
+                    case '-':
+                        return $"{_input1} {_operatorType} {_input2} = {_input1 - _input2}";                       
+                       
+                    case '*':                     
+                        return $"{_input1} {_operatorType} {_input2} = {_input1 * _input2}";                       
 
+                    case '/':
+                        return _input2 == 0 ? $"{_input1} {_operatorType} {_input2} = 0" : $"{_input1} {_operatorType} {_input2} = {_input1 / _input2}";                        
+                        
                     default:
-                        return  "?";
-                      
-
+                        return "?";                                          
                 }
-
-              
-            }
-
-            bool IsCharValidAsOperator(char _operatorType)
-            {
-
-                return _operatorType == '+' || _operatorType == '-' || _operatorType == '*' || _operatorType == 'x' || _operatorType == '/';
             }
 
 
-            void ShowErrorMessage(string _reason)
+            void ShowErrorMessage(string _inputType, int _index)
             {
+
+                string message = $"{GetNrEnd(_index)} { _inputType} is not valid!!!";
                 Console.Clear();
-                Console.WriteLine(_reason + " is not valid");
+                Console.WriteLine("--------------------------------------------------------------------------");
+                Console.WriteLine($"                    {message}");
+
             }
 
-            void Navigation(ConsoleKeyInfo _key)
+            void StartMenu()
             {
 
+                Console.WriteLine("---------------------------------------------------------------------------------");
+                Console.WriteLine("Press 'Space' to make a new calculation");
+                Console.WriteLine("Press 'Enter' to show all previous calculations");
+                Console.WriteLine("Press 'Esc' to quit");
+                ConsoleKeyInfo userKeyInput = Console.ReadKey();
 
-                switch (_key.Key)
+
+                switch (userKeyInput.Key)
                 {
-
                     //Again
-                    case ConsoleKey.Enter:
-                        isInNavigation = false;
-                        break;
-                    
-                    //Cancel
-                    case ConsoleKey.Escape:
-                        isInNavigation = false;
-                        isApplicationRunning = false;
-                        Console.Clear();
+                    case ConsoleKey.Spacebar:
+
+                        CreateCalculation();
                         break;
 
                     //Display users calculations
-                    case ConsoleKey.Spacebar:
-                        Console.Clear();
+                    case ConsoleKey.Enter:
 
+                        Console.Clear();
                         Console.WriteLine($"{userName}'s calculations: ");
                         Console.WriteLine("---------------------------------------------------------------------------------");
 
@@ -226,12 +193,47 @@ namespace Calculator
                         {
                             Console.WriteLine(cal);
                         }
-                        Console.WriteLine("---------------------------------------------------------------------------------");
+
+                        break;
+
+                    //Cancel
+                    case ConsoleKey.Escape:
+
+                        isCalculating = false;
+                        isApplicationRunning = false;
+                        Console.Clear();
                         break;
 
 
                 }
 
+            }
+
+            string GetNrEnd(int _nr)
+            {
+
+                switch (_nr)
+                {
+                    case 0:
+                        return "";
+                        
+
+                    case 1:
+                        return $"{_nr}st";
+                        
+
+                    case 2:
+                        return $"{_nr}nd";
+                     
+
+                    case 3:
+                        return $"{_nr}rd";
+                      
+
+                    default:
+                        return $"{_nr}th";
+                       
+                }
             }
         }
 
