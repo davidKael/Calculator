@@ -142,7 +142,7 @@ namespace Calculator
             switch (_operatorType)
             {
                 case '+':
-                    return string.Format("{0} {1} {2} = {3}",_input1,  _operatorType, _input2, _input1 + _input2);
+                    return string.Format("{0} {1} {2} = {3}", _input1,  _operatorType, _input2, _input1 + _input2);
                         
                 case '-':
                     return string.Format("{0} {1} {2} = {3}", _input1, _operatorType, _input2, _input1 - _input2);
