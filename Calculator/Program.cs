@@ -138,19 +138,20 @@ namespace Calculator
 
         static string Calculate(double _input1, double _input2, char _operatorType)
         {     
+
             switch (_operatorType)
             {
                 case '+':
-                    return $"{_input1} {_operatorType} {_input2} = {_input1 + _input2}";
+                    return string.Format("{0} {1} {2} = {3}",_input1,  _operatorType, _input2, _input1 + _input2);
                         
                 case '-':
-                    return $"{_input1} {_operatorType} {_input2} = {_input1 - _input2}";                       
-                       
+                    return string.Format("{0} {1} {2} = {3}", _input1, _operatorType, _input2, _input1 - _input2);
+
                 case '*':                     
-                    return $"{_input1} {_operatorType} {_input2} = {_input1 * _input2}";                       
+                    return string.Format("{0} {1} {2} = {3}", _input1, _operatorType, _input2, _input1 * _input2);
 
                 case '/':
-                    return _input2 == 0 ? $"{_input1} {_operatorType} {_input2} = 0" : $"{_input1} {_operatorType} {_input2} = {_input1 / _input2}";                        
+                    return string.Format("{0} {1} {2} = {3}", _input1, _operatorType, _input2, _input2 == 0 ? 0 : _input1 / _input2);
                         
                 default:
                     return "?";                                          
