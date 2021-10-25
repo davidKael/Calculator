@@ -73,22 +73,15 @@ namespace Calculator
         static void CreateNewCalculation()
         {
             double[] calNrs = new double[2];
-            char calOperator;
-            string calculation;
+
 
             for (int i = 0; i < calNrs.Length; i++)
             {
-                if(GetNrInput(i + 1, out double _calNr))
-                {
-                    calNrs[i] = _calNr;
-                }
+                calNrs[i] = GetNrInput(i + 1);
             }
 
-            if (GetOperatorInput(out calOperator))
-            {
-                calculation = Calculate(calNrs[0], calNrs[1], calOperator);
-                usersCalculations.Add(calculation);
-            }
+            string calculation = Calculate(calNrs[0], calNrs[1], GetOperatorInput());
+            usersCalculations.Add(calculation);
 
             Console.Clear();
             Console.WriteLine(line);
@@ -96,7 +89,7 @@ namespace Calculator
         }
   
             
-        static bool GetNrInput(int _index, out double calNr)
+        static double GetNrInput(int _index)
         {              
             while (true)
             {    
@@ -105,10 +98,10 @@ namespace Calculator
                 string userInput = Console.ReadLine();
 
                 Console.Clear();
-                if (double.TryParse(userInput, out calNr))
+                if (double.TryParse(userInput, out double calNr))
                 {
                     //input is valid            
-                    return true;                                                                                      
+                    return calNr;                                                                                      
                 }
                 else
                 {     
@@ -119,7 +112,7 @@ namespace Calculator
         }
 
 
-        static bool GetOperatorInput(out char _calOp)
+        static char GetOperatorInput()
         {
             string validOperators = "+-*/";
 
@@ -130,10 +123,10 @@ namespace Calculator
                 string userInput = Console.ReadLine();
 
                 Console.Clear();
-                if (char.TryParse(userInput, out _calOp) && validOperators.Contains(_calOp))
+                if (char.TryParse(userInput, out char calOp) && validOperators.Contains(calOp))
                 {
                     //input is valid
-                    return true;
+                    return calOp;
                 }
                 else
                 {
