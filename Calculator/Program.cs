@@ -74,7 +74,6 @@ namespace Calculator
         {
             double[] calNrs = new double[2];
 
-
             for (int i = 0; i < calNrs.Length; i++)
             {
                 calNrs[i] = GetNrInput(i + 1);
