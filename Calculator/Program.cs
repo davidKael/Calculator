@@ -14,12 +14,12 @@ namespace Calculator
             Calculator();
         }
 
-    
+
         static void Calculator()
         {
             bool isApplicationRunning = true;
 
-            if (userName == "")
+            if (userName.Length < 1)
             {
                 SetUserName();
             }
@@ -61,11 +61,24 @@ namespace Calculator
 
         static void SetUserName()
         {
-            Console.WriteLine(line);
-            Console.Write("Your name: ");
-            userName = Console.ReadLine();
+            while (true)
+            {
+                Console.WriteLine(line);
+                Console.Write("Enter your name: ");
+                userName = Console.ReadLine();
+                Console.Clear();
 
-            Console.Clear();
+                if(userName.Length > 0)
+                {
+                    break;
+
+                }
+                else
+                {
+                    ShowErrorMessage("Entered name", 0);
+                }
+            }
+
             Console.WriteLine($"Hi there {userName}!");
         }
 
@@ -84,14 +97,14 @@ namespace Calculator
 
             Console.Clear();
             Console.WriteLine(line);
-            Console.WriteLine(usersCalculations[usersCalculations.Count - 1]);               
+            Console.WriteLine(usersCalculations[usersCalculations.Count - 1]);
         }
-  
-            
+
+
         static double GetNrInput(int _index)
-        {              
+        {
             while (true)
-            {    
+            {
                 Console.WriteLine(line);
                 Console.Write($"{NrToPlacement(_index)} number:   ");
                 string userInput = Console.ReadLine();
@@ -100,12 +113,12 @@ namespace Calculator
                 if (double.TryParse(userInput, out double calNr))
                 {
                     //input is valid            
-                    return calNr;                                                                                      
+                    return calNr;
                 }
                 else
-                {     
+                {
                     //input not valid
-                    ShowErrorMessage("Number", _index);                          
+                    ShowErrorMessage("Number", _index);
                 }
             }
         }
@@ -116,7 +129,7 @@ namespace Calculator
             string validOperators = "+-*/";
 
             while (true)
-            {               
+            {
                 Console.WriteLine(line);
                 Console.Write("Choose operator ( + - * / ):  ");
                 string userInput = Console.ReadLine();
@@ -134,27 +147,26 @@ namespace Calculator
                 }
             }
         }
-            
+
 
         static string Calculate(double _input1, double _input2, char _operatorType)
-        {     
-
+        {
             switch (_operatorType)
             {
                 case '+':
-                    return string.Format("{0} {1} {2} = {3}", _input1,  _operatorType, _input2, _input1 + _input2);
-                        
+                    return string.Format("{0} {1} {2} = {3}", _input1, _operatorType, _input2, _input1 + _input2);
+
                 case '-':
                     return string.Format("{0} {1} {2} = {3}", _input1, _operatorType, _input2, _input1 - _input2);
 
-                case '*':                     
+                case '*':
                     return string.Format("{0} {1} {2} = {3}", _input1, _operatorType, _input2, _input1 * _input2);
 
                 case '/':
                     return string.Format("{0} {1} {2} = {3}", _input1, _operatorType, _input2, _input2 == 0 ? 0 : _input1 / _input2);
-                        
+
                 default:
-                    return "?";                                          
+                    return "?";
             }
         }
 
@@ -186,17 +198,17 @@ namespace Calculator
             switch (_nr)
             {
                 case 0:
-                    return "";                      
+                    return "";
 
                 case 1:
                     return $"{_nr}st";
-                        
+
                 case 2:
-                    return $"{_nr}nd";                    
+                    return $"{_nr}nd";
 
                 case 3:
                     return $"{_nr}rd";
-                      
+
                 default:
                     return $"{_nr}th";
             }
