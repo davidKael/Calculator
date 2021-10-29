@@ -116,10 +116,10 @@ namespace Calculator
 
 
         /// <summary>
-        /// Method that asks for an input from the user and make sure it is a valid number then returns it as a double
+        /// Method that asks for an input from the user and make sure it is a valid
         /// </summary>
         /// <param name="_index"></param>
-        /// <returns></returns>
+        /// <returns>Verified number as a double</returns>
         static double GetNrInput(int _index)
         {
             while (true)
@@ -144,9 +144,9 @@ namespace Calculator
 
 
         /// <summary>
-        /// Method that asks for an input from the user and make sure it is a valid operator then returns it as a char
+        /// Method that asks for an input from the user and make sure it is valid as an operator
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Verified operator as char</returns>
         static char GetOperatorInput()
         {
             string validOperators = "+-*/";
@@ -173,12 +173,12 @@ namespace Calculator
 
 
         /// <summary>
-        /// Method that takes 3 arguments, turns them into a calulation and then returns it as a string
+        /// Method that takes 3 arguments and turns them into a calulation
         /// </summary>
         /// <param name="_input1"></param>
         /// <param name="_input2"></param>
         /// <param name="_operatorType"></param>
-        /// <returns></returns>
+        /// <returns>Calculation as a string</returns>
         static string Calculate(double _input1, double _input2, char _operatorType)
         {
             switch (_operatorType)
@@ -244,7 +244,7 @@ namespace Calculator
         /// Method that takes an int and returns it as a string to use in an order, for example 1 => "1st"
         /// </summary>
         /// <param name="_nr"></param>
-        /// <returns></returns>
+        /// <returns>String</returns>
         static string NrToPlacement(int _nr)
         {
             switch (_nr)
