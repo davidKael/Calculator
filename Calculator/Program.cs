@@ -11,12 +11,16 @@ namespace Calculator
 
         static void Main(string[] args)
         {
-            Calculator();
+            AppNavigator();
         }
+        
 
+        /// <summary>
+        /// Method that lets the user navigate through the app
+        /// </summary>
+        static void AppNavigator() 
+        { 
 
-        static void Calculator()
-        {
             bool isApplicationRunning = true;
 
             if (userName.Length < 1)
@@ -29,6 +33,7 @@ namespace Calculator
                 Console.WriteLine(line);
                 Console.WriteLine("Press 'Space' to make a new calculation");
                 Console.WriteLine("Press 'Enter' to show all previous calculations");
+                Console.WriteLine("Press 'N' to change name");
                 Console.WriteLine("Press 'Esc' to quit");
                 ConsoleKeyInfo userKeyInput = Console.ReadKey();
 
@@ -45,20 +50,27 @@ namespace Calculator
                         DisplayUsersCalculations();
                         break;
 
+                    //To change user's name
+                    case ConsoleKey.N:
+                        SetUserName();
+                        break;
+
                     //Cancel
                     case ConsoleKey.Escape:
+                        Console.WriteLine($"Ok Good Bye {userName}..");
                         isApplicationRunning = false;
-                        Console.Clear();
                         break;
 
                     default:
-                        Console.Clear();
                         break;
                 }
             }
         }
 
 
+        /// <summary>
+        /// Method that makes the user save a name
+        /// </summary>
         static void SetUserName()
         {
             while (true)
@@ -71,7 +83,6 @@ namespace Calculator
                 if(userName.Length > 0)
                 {
                     break;
-
                 }
                 else
                 {
@@ -83,6 +94,9 @@ namespace Calculator
         }
 
 
+        /// <summary>
+        /// Method that controls the flow of how the user creates a new calculation
+        /// </summary>
         static void CreateNewCalculation()
         {
             double[] calNrs = new double[2];
@@ -101,6 +115,11 @@ namespace Calculator
         }
 
 
+        /// <summary>
+        /// Method that asks for an input from the user and make sure it is a valid number then returns it as a double
+        /// </summary>
+        /// <param name="_index"></param>
+        /// <returns></returns>
         static double GetNrInput(int _index)
         {
             while (true)
@@ -124,6 +143,10 @@ namespace Calculator
         }
 
 
+        /// <summary>
+        /// Method that asks for an input from the user and make sure it is a valid operator then returns it as a char
+        /// </summary>
+        /// <returns></returns>
         static char GetOperatorInput()
         {
             string validOperators = "+-*/";
@@ -131,7 +154,7 @@ namespace Calculator
             while (true)
             {
                 Console.WriteLine(line);
-                Console.Write("Choose operator ( + - * / ):  ");
+                Console.Write("Enter an operator | + | - | * | / |:  ");
                 string userInput = Console.ReadLine();
 
                 Console.Clear();
@@ -149,6 +172,13 @@ namespace Calculator
         }
 
 
+        /// <summary>
+        /// Method that takes 3 arguments, turns them into a calulation and then returns it as a string
+        /// </summary>
+        /// <param name="_input1"></param>
+        /// <param name="_input2"></param>
+        /// <param name="_operatorType"></param>
+        /// <returns></returns>
         static string Calculate(double _input1, double _input2, char _operatorType)
         {
             switch (_operatorType)
@@ -171,6 +201,11 @@ namespace Calculator
         }
 
 
+        /// <summary>
+        /// Method used for showing the user that their input is invalid
+        /// </summary>
+        /// <param name="_inputType"></param>
+        /// <param name="_index"></param>
         static void ShowErrorMessage(string _inputType, int _index)
         {
             string message = $"{NrToPlacement(_index)} { _inputType} is not valid!!!";
@@ -181,18 +216,35 @@ namespace Calculator
         }
 
 
+        /// <summary>
+        /// Method for displaying the user's previous calculations
+        /// </summary>
         static void DisplayUsersCalculations()
         {
             Console.WriteLine($"{userName}'s calculations: ");
             Console.WriteLine(line);
 
-            foreach (string cal in usersCalculations)
+            if(usersCalculations.Count > 0)
             {
-                Console.WriteLine(cal);
+                foreach (string cal in usersCalculations)
+                {
+                    Console.WriteLine(cal);
+                }
+
             }
+            else
+            {
+                Console.WriteLine("No calculations have been made...");
+            }
+ 
         }
 
 
+        /// <summary>
+        /// Method that takes an int and returns it as a string to use in an order, for example 1 => "1st"
+        /// </summary>
+        /// <param name="_nr"></param>
+        /// <returns></returns>
         static string NrToPlacement(int _nr)
         {
             switch (_nr)
